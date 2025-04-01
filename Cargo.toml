@@ -2,5 +2,22 @@
 name = "qdict"
 version = "0.1.0"
 edition = "2024"
+authors = ["Ronald Huidrom <ronhuidrom@gmail.com"]
+license = "MIT"
+description = "An offline CLI dictionary/thesaurus built on WordNet database with AE/BE pronunciation support"
 
 [dependencies]
+clap = { version = "4.4", features = ["derive"] }
+rusqlite = { version = "0.30.0", features = ["bundled"] }
+# lazy_static = "1.4.0"
+# regex = "1.10.2"
+# prettytable-rs = "0.10"
+# dirs = "5.0.1"
+# serde = { version = "1.0", features = ["derive"] }
+# toml = "0.7.8"            # For config files
+# thiserror = "1.0.50"      # Ergonomic errors
+# log = "0.4.20"            # Logging
+# env_logger = "0.10.0"     # Logging setup
+
+[dev-dependencies]
+# tempfile = "3.8.0"        # For tests
