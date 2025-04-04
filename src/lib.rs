@@ -64,4 +64,4 @@ pub fn word_meanings(conn: &Connection, word: &str) -> EResult<()> {
 }
 
 // Example usage:
-// display_word_meanings(&conn, "love")?;
+// word_meanings(&conn, "love")?;

@@ -1,14 +1,15 @@
-use clap::Parser;
 use anyhow::Result as EResult;
 use rusqlite::Connection;
 
-pub mod lib;
-use lib::word_meanings;
+pub mod lib2;
+use lib2::word_meanings;
 
+/*
 #[derive(Parser, Debug)]
 struct Args {
     word: String,
 }
+
 
 fn main() -> EResult<()> {
     let args = Args::parse();
@@ -22,3 +23,20 @@ fn main() -> EResult<()> {
 
     Ok(())
 }
+ */
+
+fn main() -> EResult<()> {
+    let conn = Connection::open("/home/ronald/.config/qdict/wordnet.sqlite")?;
+    
+    // Verify the database schema
+    let tables: Vec<String> = conn
+        .prepare("SELECT name FROM sqlite_master WHERE type='table'")?
+        .query_map([], |row| row.get(0))?
+        .collect::<Result<_, _>>()?;
+    println!("Available tables: {:?}", tables);
+    
+    // Query word meanings
+    lib2::word_meanings(&conn, "love")?;
+    Ok(())
+}
+
