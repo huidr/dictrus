@@ -1,42 +1,41 @@
-use anyhow::Result as EResult;
+use clap::Parser;
 use rusqlite::Connection;
+use anyhow::Result as AResult;
+use std::env;
 
-pub mod lib2;
-use lib2::word_meanings;
+pub mod lib;
+use lib::display_meanings;
 
-/*
+/// Fetches meaning(s) of a word with examples and grammatical categories
 #[derive(Parser, Debug)]
+#[command(author, version)]
 struct Args {
+    /// The word whose meaning you want to search
     word: String,
+
+    /// Maximum number of examples for each meaning
+    #[arg(short, long, default_value_t = false)]
+    examples: bool
 }
 
-
-fn main() -> EResult<()> {
+fn main() -> AResult<()> {
     let args = Args::parse();
     let word = args.word;
+    let examples = args.examples;
+
+    // Path to WordNet SQLite file
+    let path = env::var("HOME").expect("Home directory not found")
+	+ "/.config/dictrus/wordnet.sqlite";
     
     // Open the WordNet SQLite database
-    let conn = Connection::open("/home/ronald/.config/qdict/wordnet.sqlite")?;
+    let conn = Connection::open(&path)?;
 
     // Query and display meanings
-    lib::word_meanings(&conn, &word)?;
+    if !examples {
+	lib::display_meanings(&conn, &word)?;
+    } else {
+	lib::display_meanings_with_examples(&conn, &word)?;
+    }
 
     Ok(())
 }
- */
-
-fn main() -> EResult<()> {
-    let conn = Connection::open("/home/ronald/.config/qdict/wordnet.sqlite")?;
-    
-    // Verify the database schema
-    let tables: Vec<String> = conn
-        .prepare("SELECT name FROM sqlite_master WHERE type='table'")?
-        .query_map([], |row| row.get(0))?
-        .collect::<Result<_, _>>()?;
-    println!("Available tables: {:?}", tables);
-    
-    // Query word meanings
-    lib2::word_meanings(&conn, "love")?;
-    Ok(())
-}
-
