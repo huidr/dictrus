@@ -1,0 +1,27 @@
+The following is the directory structure
+
+github.com/huidr/qdict/
+├── Cargo.toml            # Project config
+├── LICENSE               # MIT
+├── README                # This file
+├── config/
+│   └── default.toml      # Configurable paths
+├── data/                 
+│   ├── wordnet.sqlite    # WordNet SQLite DB
+│   ├── cmudict-0.7b      # CMU Pronouncing Dict
+|   └── README            
+├── src/
+│   ├── main.rs           # CLI entrypoint
+│   ├── lib.rs            # Core library
+│   ├── db/               # Database module
+│   │   ├── mod.rs        # WordNet queries
+│   │   └── schema.sql    # DB schema (for reference)
+│   ├── phonetics/        # Pronunciation module
+│   │   ├── mod.rs        # CMUdict parser
+│   │   └── cache.rs      # In-memory cache
+│   └── output/           # Pretty-printing
+│       ├── mod.rs        # Table formatting
+│       └── theme.rs      # Color schemes
+└── tests/
+    ├── integration.rs    # End-to-end tests
+    └── mocks/            # Test data
