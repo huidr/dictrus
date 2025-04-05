@@ -1,3 +1,5 @@
 dictrus
 =======
 
+Features implemented currently: parts-of-speech, word meaning, examples
+Features to be implemented in future: synonyms, antonyms, BE/AE phonetic transcription, homophones, derivatives
