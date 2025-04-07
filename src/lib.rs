@@ -1,3 +1,4 @@
+/// Core library
 use rusqlite::Connection;
 use textwrap::{indent, Options};
 // use serde::Serialize;
@@ -5,10 +6,9 @@ use anyhow::Result as AResult;
 
 /// Returns a query depending on examples (bool value)
 fn make_query(examples: bool) -> &'static str {
-    if !examples {
-	r#"
-        SELECT ld.posid,
-               ss.definition
+    match examples {
+	false => r#"
+        SELECT ld.posid,ss.definition
         FROM words w
         JOIN senses s ON w.wordid = s.wordid
         JOIN synsets ss ON s.synsetid = ss.synsetid
@@ -16,9 +16,8 @@ fn make_query(examples: bool) -> &'static str {
         WHERE w.word = ?
         GROUP BY ss.synsetid
         ORDER BY ld.posid, s.senseid;
-        "#
-    } else {
-	r#"
+        "#,
+	true => r#"
         SELECT ld.posid,
                ss.definition,
                GROUP_CONCAT(sm.sample, '; ') as examples
@@ -30,7 +29,7 @@ fn make_query(examples: bool) -> &'static str {
         WHERE w.word = ?
         GROUP BY ss.synsetid
         ORDER BY ld.posid, s.senseid;
-        "#
+        "#,
     }
 }
 
@@ -105,6 +104,7 @@ pub fn display_meanings_with_examples(conn: &Connection, word: &str) -> AResult<
         println!("{} {}", pos_symbol, definition);
 
         // dbg!(Print) examples if they exist
+	/*
         if let Some(examples_str) = examples {
             let examples: Vec<&str> = examples_str.split("; ").collect();
             for example in examples {
@@ -114,6 +114,16 @@ pub fn display_meanings_with_examples(conn: &Connection, word: &str) -> AResult<
                 }
             }
         }
+	*/
+
+	// dbg!(Print) examples if they exist
+	if let Some(examples_str) = examples {
+	    examples_str
+		.split("; ")
+		.filter(|e| !e.is_empty())
+		.map(|e| e.trim_matches('"'))
+		.for_each(|cleaned| println!("      \"{}\"", cleaned));
+	}
 
 	// Print synonyms if they exist
 	/*
