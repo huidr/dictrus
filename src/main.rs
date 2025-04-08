@@ -1,3 +1,4 @@
+/// An offline CLI dictionary
 use clap::Parser;
 use rusqlite::Connection;
 use anyhow::Result as AResult;
@@ -31,10 +32,9 @@ fn main() -> AResult<()> {
     let conn = Connection::open(&path)?;
 
     // Query and display meanings
-    if !examples {
-	lib::display_meanings(&conn, &word)?;
-    } else {
-	lib::display_meanings_with_examples(&conn, &word)?;
+    match examples {
+	false => lib::display_meanings(&conn, &word)?;
+	true => lib::display_meanings_with_examples(&conn, &word)?;
     }
 
     Ok(())
