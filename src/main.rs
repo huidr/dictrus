@@ -33,8 +33,8 @@ fn main() -> AResult<()> {
 
     // Query and display meanings
     match examples {
-	false => lib::display_meanings(&conn, &word)?;
-	true => lib::display_meanings_with_examples(&conn, &word)?;
+	false => lib::display_meanings(&conn, &word)?,
+	true => lib::display_meanings_with_examples(&conn, &word)?,
     }
 
     Ok(())
